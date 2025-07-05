@@ -12,6 +12,13 @@ out/
 build/
 dist/
 
+# Next.js specific large files
+.next/cache/
+.next/cache/webpack/
+*.pack
+node_modules/@next/swc-*/
+node_modules/@next/swc-*/*.node
+
 # Production
 /build
 /dist
