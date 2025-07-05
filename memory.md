@@ -1,0 +1,145 @@
+# PROJECT MEMORY
+
+## Overview
+HeyZack Knowledge Hub - A fully functional static client-side application that processes markdown files, renders mermaid diagrams, and provides comprehensive document navigation and search functionality. The project transforms a collection of marketing and business documents into an interactive knowledge management system.
+
+## Completed Tasks
+
+### [2025-01-27] Hydration Error Fix
+- **Outcome**: Resolved React hydration mismatch in Header component theme toggle
+- **Breakthrough**: Used useEffect with mounted state to prevent server/client rendering differences
+- **Errors Fixed**: Console hydration error causing tree regeneration on client
+- **Code Changes**: Modified `Header.tsx` with mounted state and conditional rendering
+- **Next Dependencies**: Ensures stable UI rendering and better user experience
+
+## [2025-01-25] Task Completed: Client-Side Mermaid Diagram Rendering
+- **Outcome**: Successfully implemented comprehensive Mermaid diagram rendering with error handling, loading states, and theme support
+- **Breakthrough**: Created a robust MermaidRenderer component that integrates seamlessly with ReactMarkdown and handles all Mermaid diagram types
+- **Errors Fixed**: 
+  - Implemented proper error boundaries for diagram rendering failures
+  - Added loading states to prevent UI blocking during diagram generation
+  - Fixed theme integration for consistent visual appearance
+  - Resolved async rendering issues with useEffect and proper cleanup
+- **Code Changes**: 
+  - Created `src/components/documents/MermaidRenderer.tsx` with comprehensive error handling
+  - Updated `src/app/document/[id]/page.tsx` to use MermaidRenderer for code blocks
+  - Implemented custom hook for theme management in Mermaid diagrams
+  - Added proper TypeScript interfaces for Mermaid component props
+  - Integrated mermaid.js v11.8.0 with proper initialization and cleanup
+- **Next Dependencies**: Enables rich visual documentation with interactive diagrams in all markdown documents
+
+## [2025-01-25] Task Completed: Connected All Pages and Files for Full Application Functionality
+- **Outcome**: Successfully connected all components to create a fully functional knowledge hub application
+- **Breakthrough**: Implemented dynamic document processing system that automatically indexes all markdown files from data-sources directory
+- **Errors Fixed**: 
+  - Fixed null reference errors in document statistics by adding proper null checks
+  - Resolved navigation issues by implementing URL parameter handling for view switching
+  - Fixed static data references by connecting to dynamic document system
+- **Code Changes**: 
+  - Updated `src/lib/document-indexer.ts` to include all markdown files from data-sources
+  - Modified `src/app/page.tsx` to use dynamic data from useDocuments hook
+  - Created `src/app/document/[id]/page.tsx` for individual document viewing
+  - Created `src/app/search/page.tsx` for search functionality
+  - Updated `src/components/layout/DashboardLayout.tsx` navigation to match actual pages
+  - Implemented proper error handling and loading states
+- **Next Dependencies**: Ready for mermaid diagram rendering implementation and enhanced search features
+
+## [2025-01-25] Task Completed: Set Up Markdown File Processing System
+- **Outcome**: Comprehensive markdown processing system that handles all data-sources content
+- **Breakthrough**: Created a robust document indexer that automatically discovers and processes markdown files with metadata extraction
+- **Errors Fixed**: 
+  - Resolved file path issues in document indexer
+  - Fixed markdown processing pipeline for frontmatter and content extraction
+  - Implemented proper category and tag extraction from documents
+- **Code Changes**: 
+  - Enhanced `src/lib/markdown-processor.ts` with comprehensive metadata extraction
+  - Updated `src/lib/document-indexer.ts` with dynamic file discovery
+  - Implemented `src/hooks/useDocuments.ts` for document state management
+  - Created proper TypeScript interfaces in `src/types/document.ts`
+- **Next Dependencies**: Enables document navigation, search functionality, and mermaid rendering
+
+## [2025-01-25] Task Completed: Development Server Setup and Preview Functionality
+- **Outcome**: Fully operational development environment with live preview capabilities
+- **Breakthrough**: Successfully configured Next.js with proper webpack settings for static asset handling
+- **Errors Fixed**: 
+  - Resolved CSS parsing errors in Tailwind configuration
+  - Fixed webpack configuration for markdown file processing
+  - Implemented proper URL rewrites for static assets
+- **Code Changes**: 
+  - Updated `next.config.ts` with webpack and rewrite configurations
+  - Fixed `tailwind.config.ts` CSS parsing issues
+  - Copied data-sources to public directory for static access
+- **Next Dependencies**: Enables real-time development and testing of markdown processing features
+
+## [2025-01-25] Task Completed: Data-Sources Folder Integration
+- **Outcome**: Successfully moved and integrated all markdown content into the project structure
+- **Breakthrough**: Seamless integration of existing documentation without breaking the codebase
+- **Errors Fixed**: 
+  - Maintained file structure integrity during migration
+  - Ensured all file references remain valid
+  - Preserved document relationships and metadata
+- **Code Changes**: 
+  - Moved all files from external data-sources to project data-sources directory
+  - Updated file path references in configuration files
+  - Maintained original folder structure for content organization
+- **Next Dependencies**: Enables markdown processing and document indexing implementation
+
+## [2025-01-25] Task Completed: Core Dependencies Installation
+- **Outcome**: All necessary packages installed for markdown processing, UI components, and diagram rendering
+- **Breakthrough**: Comprehensive dependency setup that supports all planned features
+- **Errors Fixed**: 
+  - Resolved package compatibility issues
+  - Ensured proper TypeScript support for all dependencies
+  - Fixed version conflicts between packages
+- **Code Changes**: 
+  - Updated `package.json` with essential dependencies
+  - Installed markdown processing libraries (marked, react-markdown, remark-gfm)
+  - Added UI component libraries and styling tools
+  - Included mermaid for diagram rendering capabilities
+- **Next Dependencies**: Enables implementation of markdown processing and UI components
+
+## [2025-01-25] Task Completed: Basic Dashboard Layout and Navigation Structure
+- **Outcome**: Professional dashboard interface with responsive navigation and modern UI design
+- **Breakthrough**: Created a scalable layout system that adapts to different content types
+- **Errors Fixed**: 
+  - Implemented proper responsive design for mobile and desktop
+  - Fixed navigation state management
+  - Resolved CSS conflicts and styling issues
+- **Code Changes**: 
+  - Created `src/components/layout/DashboardLayout.tsx` with sidebar navigation
+  - Implemented responsive design patterns
+  - Added proper TypeScript interfaces for layout components
+  - Integrated Heroicons for consistent iconography
+- **Next Dependencies**: Provides foundation for content integration and document viewing
+
+## [2025-01-25] Task Completed: Initial Next.js Project Setup
+- **Outcome**: Fully configured Next.js 15 project with TypeScript and Tailwind CSS
+- **Breakthrough**: Modern development environment with optimal configuration for static site generation
+- **Errors Fixed**: 
+  - Resolved initial configuration conflicts
+  - Fixed TypeScript strict mode issues
+  - Implemented proper ESLint configuration
+- **Code Changes**: 
+  - Created project structure with src/ directory organization
+  - Configured `tsconfig.json` for strict TypeScript
+  - Set up `tailwind.config.ts` with custom theme
+  - Implemented proper build and development scripts
+- **Next Dependencies**: Enables all subsequent development phases
+
+## Key Breakthroughs
+1. **Dynamic Document Processing**: Created a system that automatically discovers and processes all markdown files without manual configuration
+2. **Null-Safe State Management**: Implemented robust error handling that prevents runtime crashes during data loading
+3. **URL-Based Navigation**: Enabled seamless navigation between dashboard and browse views using URL parameters
+4. **Comprehensive Document Indexing**: Built a search-ready document index with metadata extraction and categorization
+
+## Error Patterns & Solutions
+1. **Null Reference Errors**: Always implement null checks when accessing dynamic data (e.g., `data?.property || fallback`)
+2. **Static vs Dynamic Data**: Replace static mock data with dynamic hooks and state management
+3. **File Path Issues**: Use absolute paths and proper webpack configuration for asset handling
+4. **Navigation State**: Implement URL parameter handling for persistent navigation state
+
+## Architecture Decisions
+1. **Client-Side Processing**: Chose static site generation with client-side markdown processing for optimal performance
+2. **Hook-Based State Management**: Used custom hooks for document management instead of external state libraries
+3. **Component Composition**: Implemented modular component architecture for maintainability
+4. **TypeScript First**: Strict TypeScript configuration for type safety and developer experience

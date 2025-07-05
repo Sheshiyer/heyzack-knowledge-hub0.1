@@ -1,0 +1,17 @@
+{
+  "/_not-found/page": "/_not-found",
+  "/favicon.ico/route": "/favicon.ico",
+  "/analytics/page": "/analytics",
+  "/categories/page": "/categories",
+  "/business-strategy/page": "/business-strategy",
+  "/document/[id]/page": "/document/[id]",
+  "/knowledge-base/page": "/knowledge-base",
+  "/page": "/",
+  "/documents/page": "/documents",
+  "/reference-materials/page": "/reference-materials",
+  "/search/page": "/search",
+  "/strategic-analysis/page": "/strategic-analysis",
+  "/market-research/page": "/market-research",
+  "/settings/page": "/settings",
+  "/technical-docs/page": "/technical-docs"
+}
