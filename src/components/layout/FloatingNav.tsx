@@ -80,30 +80,30 @@ export const FloatingNav: React.FC = () => {
       'fixed left-4 top-4 bottom-4 z-50 transition-all duration-300',
       isCollapsed ? 'w-16' : 'w-64'
     )}>
-      <div className="h-full bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl flex flex-col">
+      <div className="h-full glass rounded-2xl shadow-glass flex flex-col animate-glass-float">
         {/* Header */}
-        <div className="p-4 border-b border-white/10">
+        <div className="p-4 border-b border-border/20">
           <div className="flex items-center justify-between">
             {!isCollapsed && (
               <div className="flex items-center space-x-3">
-                <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
+                <div className="w-8 h-8 gradient-primary rounded-lg flex items-center justify-center shadow-glow">
                   <BookOpenIcon className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <h2 className="text-white font-semibold text-sm">HeyZack</h2>
-                  <p className="text-white/60 text-xs">Knowledge Hub</p>
+                  <h2 className="text-foreground font-display font-semibold text-sm">HeyZack</h2>
+                  <p className="text-muted-foreground text-xs">Knowledge Hub</p>
                 </div>
               </div>
             )}
             
             <button
               onClick={() => setIsCollapsed(!isCollapsed)}
-              className="p-1.5 rounded-lg bg-white/5 hover:bg-white/10 transition-colors"
+              className="btn-glass p-1.5 rounded-lg transition-all duration-200 hover:shadow-glow"
             >
               {isCollapsed ? (
-                <ChevronRightIcon className="w-4 h-4 text-white/80" />
+                <ChevronRightIcon className="w-4 h-4 text-muted-foreground hover:text-foreground transition-colors" />
               ) : (
-                <ChevronLeftIcon className="w-4 h-4 text-white/80" />
+                <ChevronLeftIcon className="w-4 h-4 text-muted-foreground hover:text-foreground transition-colors" />
               )}
             </button>
           </div>
@@ -120,15 +120,15 @@ export const FloatingNav: React.FC = () => {
                 key={item.name}
                 href={item.href}
                 className={clsx(
-                  'flex items-center space-x-3 px-3 py-2.5 rounded-xl transition-all duration-200 group',
+                  'nav-item flex items-center space-x-3 px-3 py-2.5 rounded-xl transition-all duration-200 group',
                   active
-                    ? 'bg-gradient-to-r from-purple-500/20 to-pink-500/20 text-white border border-purple-400/30'
-                    : 'text-white/70 hover:text-white hover:bg-white/5'
+                    ? 'bg-primary/20 text-foreground border border-primary/30 shadow-glow-pink'
+                    : 'text-muted-foreground hover:text-foreground hover:bg-glass-light'
                 )}
               >
                 <Icon className={clsx(
                   'w-5 h-5 transition-colors',
-                  active ? 'text-purple-300' : 'text-white/70 group-hover:text-white'
+                  active ? 'text-primary' : 'text-muted-foreground group-hover:text-foreground'
                 )} />
                 
                 {!isCollapsed && (
@@ -136,7 +136,7 @@ export const FloatingNav: React.FC = () => {
                 )}
                 
                 {!isCollapsed && item.badge && (
-                  <span className="ml-auto px-2 py-0.5 bg-purple-500/20 text-purple-200 text-xs rounded-full">
+                  <span className="ml-auto px-2 py-0.5 bg-primary/20 text-primary text-xs rounded-full">
                     {item.badge}
                   </span>
                 )}
@@ -146,7 +146,7 @@ export const FloatingNav: React.FC = () => {
         </div>
         
         {/* Quick Actions */}
-        <div className="p-4 border-t border-white/10 space-y-2">
+        <div className="p-4 border-t border-border/20 space-y-2">
           {quickActions.map((item) => {
             const Icon = item.icon;
             const active = isActive(item.href);
@@ -156,15 +156,15 @@ export const FloatingNav: React.FC = () => {
                 key={item.name}
                 href={item.href}
                 className={clsx(
-                  'flex items-center space-x-3 px-3 py-2.5 rounded-xl transition-all duration-200 group',
+                  'nav-item flex items-center space-x-3 px-3 py-2.5 rounded-xl transition-all duration-200 group',
                   active
-                    ? 'bg-gradient-to-r from-purple-500/20 to-pink-500/20 text-white border border-purple-400/30'
-                    : 'text-white/70 hover:text-white hover:bg-white/5'
+                    ? 'bg-primary/20 text-foreground border border-primary/30 shadow-glow-pink'
+                    : 'text-muted-foreground hover:text-foreground hover:bg-glass-light'
                 )}
               >
                 <Icon className={clsx(
                   'w-5 h-5 transition-colors',
-                  active ? 'text-purple-300' : 'text-white/70 group-hover:text-white'
+                  active ? 'text-primary' : 'text-muted-foreground group-hover:text-foreground'
                 )} />
                 
                 {!isCollapsed && (

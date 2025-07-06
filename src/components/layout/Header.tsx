@@ -32,7 +32,7 @@ export const Header: React.FC = () => {
   };
   
   return (
-    <header className="sticky top-0 z-40 backdrop-blur-xl bg-white/5 border-b border-white/10">
+    <header className="sticky top-0 z-40 glass-light border-b border-border/20">
       <div className="px-6 py-4">
         <div className="flex items-center justify-between">
           {/* Search Bar */}
@@ -77,7 +77,7 @@ export const Header: React.FC = () => {
               className="p-2 relative"
             >
               <BellIcon className="w-5 h-5" />
-              <span className="absolute -top-1 -right-1 w-3 h-3 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full" />
+              <span className="absolute -top-1 -right-1 w-3 h-3 gradient-primary rounded-full animate-pulse-glow" />
             </Button>
             
             {/* User Menu */}
@@ -101,25 +101,25 @@ export const Header: React.FC = () => {
                   variant="glass"
                   padding="none"
                 >
-                  <div className="px-4 py-3 border-b border-white/10">
-                    <p className="text-white font-medium text-sm">John Doe</p>
-                    <p className="text-white/60 text-xs">john@example.com</p>
+                  <div className="px-4 py-3 border-b border-border/20">
+                    <p className="text-foreground font-medium text-sm">John Doe</p>
+                    <p className="text-muted-foreground text-xs">john@example.com</p>
                   </div>
                   
                   <div className="py-2">
-                    <button className="w-full px-4 py-2 text-left text-white/80 hover:text-white hover:bg-white/5 transition-colors flex items-center space-x-2">
+                    <button className="w-full px-4 py-2 text-left text-muted-foreground hover:text-foreground hover:bg-glass-light transition-colors flex items-center space-x-2">
                       <UserCircleIcon className="w-4 h-4" />
                       <span className="text-sm">Profile</span>
                     </button>
                     
-                    <button className="w-full px-4 py-2 text-left text-white/80 hover:text-white hover:bg-white/5 transition-colors flex items-center space-x-2">
+                    <button className="w-full px-4 py-2 text-left text-muted-foreground hover:text-foreground hover:bg-glass-light transition-colors flex items-center space-x-2">
                       <Cog6ToothIcon className="w-4 h-4" />
                       <span className="text-sm">Settings</span>
                     </button>
                   </div>
                   
-                  <div className="border-t border-white/10 py-2">
-                    <button className="w-full px-4 py-2 text-left text-red-400 hover:text-red-300 hover:bg-red-500/10 transition-colors">
+                  <div className="border-t border-border/20 py-2">
+                    <button className="w-full px-4 py-2 text-left text-accent hover:text-accent/80 hover:bg-accent/10 transition-colors">
                       <span className="text-sm">Sign out</span>
                     </button>
                   </div>
