@@ -5,6 +5,8 @@
 
 ## 1. Battery Video Doorbell (IPB192)
 
+**Cost:** $20.00
+
 **Model:** IPB192
 
 **Specs:**
@@ -30,6 +32,8 @@
 ---
 
 ## 2. 2K Video Doorbell (SC162-WCD3)
+
+**Cost:** $29.50
 
 **Model:** SC162-WCD3
 
@@ -59,6 +63,8 @@
 
 ## 3. Battery Solar Camera (IPC197)
 
+**Cost:** $20.00
+
 **Model:** IPC197
 
 **Specs:**
@@ -87,6 +93,8 @@
 
 ## 4. Smart Door Windows Sensor
 
+**Cost:** $4.60
+
 **Model:** Not specified
 
 **Specs:**
@@ -106,6 +114,8 @@
 ---
 
 ## 5. PIR Motion Sensor (MD100-W)
+
+**Cost:** $6.60
 
 **Model:** MD100-W
 
@@ -134,6 +144,8 @@
 
 ## 6. Super Remote Hub (S15Pro)
 
+**Cost:** $15.10
+
 **Model:** S15Pro
 
 **Specs:**
@@ -159,6 +171,8 @@
 ---
 
 ## 7. Air-Conditioner Controller (S16Pro)
+
+**Cost:** $16.50
 
 **Model:** S16Pro
 
@@ -186,6 +200,8 @@
 
 ## 8. Universal Remote Control (UFO-R1)
 
+**Cost:** $4.50
+
 **Model:** UFO-R1
 
 **Specs:**
@@ -208,6 +224,8 @@
 ---
 
 ## 9. Smart Power Strip (WPS20-EU)
+
+**Cost:** $21.00
 
 **Model:** WPS20-EU
 
@@ -239,6 +257,8 @@
 
 ## 10. Smart Plug-EU (F1S204-EU / F1S302-UK)
 
+**Cost:** $5.70
+
 **Models:** F1S204-EU, F1S302-UK
 
 **Specs:**
@@ -258,6 +278,8 @@
 ---
 
 ## 11. Pet Feeder + Pet Water Fountain (F17-C+W8)
+
+**Cost:** $16.60
 
 **Model:** F17-C+W8
 

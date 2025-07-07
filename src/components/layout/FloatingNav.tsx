@@ -14,7 +14,8 @@ import {
   LightBulbIcon,
   CpuChipIcon,
   ChartPieIcon,
-  ArchiveBoxIcon
+  ArchiveBoxIcon,
+  CalculatorIcon
 } from '@heroicons/react/24/outline';
 
 interface NavItem {
@@ -27,6 +28,7 @@ interface NavItem {
 const navigationItems: NavItem[] = [
   { name: 'Dashboard', href: '/', icon: HomeIcon },
   { name: 'Search', href: '/search', icon: MagnifyingGlassIcon },
+  { name: 'Pricing Calculator', href: '/pricing-calculator', icon: CalculatorIcon },
   { name: 'Business Strategy', href: '/business-strategy', icon: LightBulbIcon },
   { name: 'Technical Documentation', href: '/technical-docs', icon: CpuChipIcon },
   { name: 'Market Research', href: '/market-research', icon: ChartPieIcon },

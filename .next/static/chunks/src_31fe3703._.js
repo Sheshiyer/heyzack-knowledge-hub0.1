@@ -26,6 +26,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$heroicons$
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$heroicons$2f$react$2f$24$2f$outline$2f$esm$2f$CpuChipIcon$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__CpuChipIcon$3e$__ = __turbopack_context__.i("[project]/node_modules/@heroicons/react/24/outline/esm/CpuChipIcon.js [app-client] (ecmascript) <export default as CpuChipIcon>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$heroicons$2f$react$2f$24$2f$outline$2f$esm$2f$ChartPieIcon$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ChartPieIcon$3e$__ = __turbopack_context__.i("[project]/node_modules/@heroicons/react/24/outline/esm/ChartPieIcon.js [app-client] (ecmascript) <export default as ChartPieIcon>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$heroicons$2f$react$2f$24$2f$outline$2f$esm$2f$ArchiveBoxIcon$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ArchiveBoxIcon$3e$__ = __turbopack_context__.i("[project]/node_modules/@heroicons/react/24/outline/esm/ArchiveBoxIcon.js [app-client] (ecmascript) <export default as ArchiveBoxIcon>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$heroicons$2f$react$2f$24$2f$outline$2f$esm$2f$CalculatorIcon$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__CalculatorIcon$3e$__ = __turbopack_context__.i("[project]/node_modules/@heroicons/react/24/outline/esm/CalculatorIcon.js [app-client] (ecmascript) <export default as CalculatorIcon>");
 ;
 var _s = __turbopack_context__.k.signature(), _s1 = __turbopack_context__.k.signature(), _s2 = __turbopack_context__.k.signature();
 'use client';
@@ -44,6 +45,11 @@ const navigationItems = [
         name: 'Search',
         href: '/search',
         icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$heroicons$2f$react$2f$24$2f$outline$2f$esm$2f$MagnifyingGlassIcon$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__MagnifyingGlassIcon$3e$__["MagnifyingGlassIcon"]
+    },
+    {
+        name: 'Pricing Calculator',
+        href: '/pricing-calculator',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$heroicons$2f$react$2f$24$2f$outline$2f$esm$2f$CalculatorIcon$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__CalculatorIcon$3e$__["CalculatorIcon"]
     },
     {
         name: 'Business Strategy',
@@ -99,7 +105,7 @@ const NavProvider = ({ children })=>{
         children: children
     }, void 0, false, {
         fileName: "[project]/src/components/layout/FloatingNav.tsx",
-        lineNumber: 61,
+        lineNumber: 63,
         columnNumber: 5
     }, this);
 };
@@ -134,12 +140,12 @@ const FloatingNav = ()=>{
                                             className: "w-5 h-5 text-white"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/layout/FloatingNav.tsx",
-                                            lineNumber: 90,
+                                            lineNumber: 92,
                                             columnNumber: 19
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/layout/FloatingNav.tsx",
-                                        lineNumber: 89,
+                                        lineNumber: 91,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -149,7 +155,7 @@ const FloatingNav = ()=>{
                                                 children: "HeyZack"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/layout/FloatingNav.tsx",
-                                                lineNumber: 93,
+                                                lineNumber: 95,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -157,19 +163,19 @@ const FloatingNav = ()=>{
                                                 children: "Knowledge Hub"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/layout/FloatingNav.tsx",
-                                                lineNumber: 94,
+                                                lineNumber: 96,
                                                 columnNumber: 19
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/layout/FloatingNav.tsx",
-                                        lineNumber: 92,
+                                        lineNumber: 94,
                                         columnNumber: 17
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/layout/FloatingNav.tsx",
-                                lineNumber: 88,
+                                lineNumber: 90,
                                 columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -179,29 +185,29 @@ const FloatingNav = ()=>{
                                     className: "w-4 h-4 text-muted-foreground hover:text-foreground transition-colors"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/layout/FloatingNav.tsx",
-                                    lineNumber: 104,
+                                    lineNumber: 106,
                                     columnNumber: 17
                                 }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$heroicons$2f$react$2f$24$2f$outline$2f$esm$2f$ChevronLeftIcon$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ChevronLeftIcon$3e$__["ChevronLeftIcon"], {
                                     className: "w-4 h-4 text-muted-foreground hover:text-foreground transition-colors"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/layout/FloatingNav.tsx",
-                                    lineNumber: 106,
+                                    lineNumber: 108,
                                     columnNumber: 17
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/components/layout/FloatingNav.tsx",
-                                lineNumber: 99,
+                                lineNumber: 101,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/layout/FloatingNav.tsx",
-                        lineNumber: 86,
+                        lineNumber: 88,
                         columnNumber: 11
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/src/components/layout/FloatingNav.tsx",
-                    lineNumber: 85,
+                    lineNumber: 87,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -217,7 +223,7 @@ const FloatingNav = ()=>{
                                     className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$clsx$2f$dist$2f$clsx$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["clsx"])('w-5 h-5 transition-colors', active ? 'text-primary' : 'text-muted-foreground group-hover:text-foreground')
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/layout/FloatingNav.tsx",
-                                    lineNumber: 129,
+                                    lineNumber: 131,
                                     columnNumber: 17
                                 }, this),
                                 !isCollapsed && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -225,7 +231,7 @@ const FloatingNav = ()=>{
                                     children: item.name
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/layout/FloatingNav.tsx",
-                                    lineNumber: 135,
+                                    lineNumber: 137,
                                     columnNumber: 19
                                 }, this),
                                 !isCollapsed && item.badge && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -233,19 +239,19 @@ const FloatingNav = ()=>{
                                     children: item.badge
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/layout/FloatingNav.tsx",
-                                    lineNumber: 139,
+                                    lineNumber: 141,
                                     columnNumber: 19
                                 }, this)
                             ]
                         }, item.name, true, {
                             fileName: "[project]/src/components/layout/FloatingNav.tsx",
-                            lineNumber: 119,
+                            lineNumber: 121,
                             columnNumber: 15
                         }, this);
                     })
                 }, void 0, false, {
                     fileName: "[project]/src/components/layout/FloatingNav.tsx",
-                    lineNumber: 113,
+                    lineNumber: 115,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -261,7 +267,7 @@ const FloatingNav = ()=>{
                                     className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$clsx$2f$dist$2f$clsx$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["clsx"])('w-5 h-5 transition-colors', active ? 'text-primary' : 'text-muted-foreground group-hover:text-foreground')
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/layout/FloatingNav.tsx",
-                                    lineNumber: 165,
+                                    lineNumber: 167,
                                     columnNumber: 17
                                 }, this),
                                 !isCollapsed && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -269,30 +275,30 @@ const FloatingNav = ()=>{
                                     children: item.name
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/layout/FloatingNav.tsx",
-                                    lineNumber: 171,
+                                    lineNumber: 173,
                                     columnNumber: 19
                                 }, this)
                             ]
                         }, item.name, true, {
                             fileName: "[project]/src/components/layout/FloatingNav.tsx",
-                            lineNumber: 155,
+                            lineNumber: 157,
                             columnNumber: 15
                         }, this);
                     })
                 }, void 0, false, {
                     fileName: "[project]/src/components/layout/FloatingNav.tsx",
-                    lineNumber: 149,
+                    lineNumber: 151,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/src/components/layout/FloatingNav.tsx",
-            lineNumber: 83,
+            lineNumber: 85,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/src/components/layout/FloatingNav.tsx",
-        lineNumber: 79,
+        lineNumber: 81,
         columnNumber: 5
     }, this);
 };
