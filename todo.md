@@ -14,6 +14,8 @@ Complete rebuild of HeyZack Knowledge Hub dashboard with modern floating navigat
 - [ ] Create reusable UI components (cards, buttons, inputs)
 - [ ] Implement Visual Pricing Calculator with LaunchBoom integration
 
+## Completed (move to memory.md)
+
 
 
 ## PRIORITY 0: CRITICAL ROUTING FIXES (Immediate) ✅ COMPLETED
