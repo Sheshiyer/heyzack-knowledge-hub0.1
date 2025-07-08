@@ -103,21 +103,21 @@ const KIT_TEMPLATES: KitTemplate[] = [
     id: 'studio',
     name: 'Studio Kit',
     description: 'Perfect for apartments, condos, small spaces',
-    baseProducts: ['hub', 'smart-plug', 'smart-plug', 'smart-plug', 'motion-sensor', 'door-sensor'],
+    baseProducts: ['doorbell-battery', 'camera-battery', 'door-sensor', 'motion-sensor', 'hub', 'smart-plug', 'smart-plug'],
     targetPrice: { earlyBird: 119, standard: 159, retail: 199 }
   },
   {
     id: 'family',
-    name: 'Family Kit',
+    name: 'Home Apt Kit',
     description: 'Ideal for families, townhomes, growing households',
-    baseProducts: ['hub', 'doorbell-battery', 'smart-plug', 'smart-plug', 'smart-plug', 'smart-plug', 'motion-sensor', 'door-sensor', 'door-sensor', 'ac-controller'],
+    baseProducts: ['doorbell-2k', 'camera-2k', 'door-sensor', 'door-sensor', 'door-sensor', 'motion-sensor', 'motion-sensor', 'hub', 'ac-controller', 'remote-control', 'remote-control', 'smart-plug', 'smart-plug', 'smart-plug', 'smart-plug', 'smart-plug', 'pet-feeder', 'lock-box'],
     targetPrice: { earlyBird: 239, standard: 319, retail: 399 }
   },
   {
     id: 'villa',
     name: 'Villa Kit',
     description: 'Comprehensive solution for large homes, luxury properties',
-    baseProducts: ['hub', 'doorbell-2k', 'camera-battery', 'smart-plug', 'smart-plug', 'smart-plug', 'smart-plug', 'motion-sensor', 'motion-sensor', 'door-sensor', 'door-sensor', 'door-sensor', 'ac-controller', 'power-strip', 'lock-box', 'remote-control'],
+    baseProducts: ['doorbell-2k', 'camera-2k-solar', 'door-sensor', 'door-sensor', 'door-sensor', 'door-sensor', 'door-sensor', 'door-sensor', 'motion-sensor', 'motion-sensor', 'motion-sensor', 'motion-sensor', 'hub', 'ac-controller', 'remote-control', 'remote-control', 'power-strip', 'smart-plug', 'smart-plug', 'smart-plug', 'smart-plug', 'smart-plug', 'smart-plug', 'smart-plug', 'smart-plug', 'pet-feeder', 'lock-box', 'lock-box', 'lock-box'],
     targetPrice: { earlyBird: 419, standard: 559, retail: 699 }
   }
 ];
@@ -133,8 +133,8 @@ export default function PricingCalculatorPage() {
     targetMarginHigh: 45.0,
     targetDiscountLow: 25,
     targetDiscountHigh: 40,
-    globalMarkupPercentage: 0,
-    globalCAC: 50000,
+    globalMarkupPercentage: 200,
+    globalCAC: 50,
     targetKitMargin: 40.0
   });
 
@@ -178,6 +178,72 @@ export default function PricingCalculatorPage() {
     };
   };
 
+  // Function to calculate COGS for a specific kit
+  const calculateKitCOGS = (products: Record<string, number>): number => {
+    const baseCOGS = Object.entries(products).reduce((total, [productId, quantity]) => {
+      const product = PRODUCTS.find(p => p.id === productId);
+      return total + (product ? product.cost * quantity : 0);
+    }, 0);
+    
+    // Apply global markup percentage
+    const markupMultiplier = 1 + (inputs.globalMarkupPercentage / 100);
+    return baseCOGS * markupMultiplier;
+  };
+
+  // Auto-calculate target kit margin based on global markup
+  const calculateAutoTargetKitMargin = (globalMarkupPercentage: number) => {
+    // Formula: Target margin = (markup / (1 + markup)) * 100
+    // This ensures the margin reflects the actual profit percentage after markup
+    const markupDecimal = globalMarkupPercentage / 100;
+    const autoMargin = (markupDecimal / (1 + markupDecimal)) * 100;
+    return Math.min(Math.max(autoMargin, 10), 80); // Clamp between 10% and 80%
+  };
+
+  // Calculate comprehensive pricing tiers for kit templates
+  const calculateKitPricingTiers = () => {
+    const kitCOGS = calculateKitCOGS(selectedProducts);
+    const adjustedCOGS = kitCOGS * (1 + inputs.globalMarkupPercentage / 100);
+    
+    // Cost Price (COGS + markup)
+    const costPrice = adjustedCOGS;
+    
+    // Early Bird (based on target margin)
+    const earlyBird = adjustedCOGS / (1 - inputs.targetKitMargin / 100);
+    
+    // 1000 Backers (10% higher than early bird)
+    const thousandBackers = earlyBird * 1.1;
+    
+    // Standard/Retail (20% higher than early bird)
+    const retail = earlyBird * 1.2;
+    
+    // Full Retail (30% higher than early bird)
+    const fullRetail = earlyBird * 1.3;
+    
+    return {
+      costPrice,
+      earlyBird,
+      thousandBackers,
+      retail,
+      fullRetail
+    };
+  };
+
+  // Get selected products with quantities for display
+  const getSelectedProductsList = () => {
+    return Object.entries(selectedProducts)
+      .filter(([_, quantity]) => quantity > 0)
+      .map(([productId, quantity]) => {
+        const product = PRODUCTS.find(p => p.id === productId);
+        if (!product) return null;
+        return {
+          ...product,
+          quantity,
+          totalCost: product.cost * quantity
+        };
+      })
+      .filter((item): item is Product & { quantity: number; totalCost: number } => item !== null);
+  };
+
   // Initialize selected products based on kit template
   const initializeKit = (kitId: string) => {
     const kit = KIT_TEMPLATES.find(k => k.id === kitId);
@@ -207,6 +273,14 @@ export default function PricingCalculatorPage() {
   useState(() => {
     initializeKit('studio');
   });
+
+  // Auto-update target kit margin when global markup changes
+  useEffect(() => {
+    if (inputs.globalMarkupPercentage > 0) {
+      const autoMargin = calculateAutoTargetKitMargin(inputs.globalMarkupPercentage);
+      setInputs(prev => ({ ...prev, targetKitMargin: autoMargin }));
+    }
+  }, [inputs.globalMarkupPercentage]);
 
   // Update Price Selection when global inputs change
   useEffect(() => {
@@ -450,35 +524,149 @@ export default function PricingCalculatorPage() {
           )}
         </div>
 
-        {/* Kit Selection */}
+        {/* Kit Templates with Integrated Product Selection */}
         <div className="mb-6">
           <div className="bg-white/10 backdrop-blur-sm rounded-xl border border-white/20 p-6">
             <h2 className="text-xl font-semibold text-white mb-4">Kit Templates</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {KIT_TEMPLATES.map((kit) => (
-                <button
-                  key={kit.id}
-                  onClick={() => {
-                    setSelectedKit(kit.id);
-                    initializeKit(kit.id);
-                  }}
-                  className={`p-4 rounded-lg border transition-all ${
-                    selectedKit === kit.id
-                      ? 'bg-purple-500/30 border-purple-400 text-white'
-                      : 'bg-white/5 border-white/20 text-white/80 hover:bg-white/10'
-                  }`}
-                >
-                  <div className="flex items-center gap-2 mb-2">
-                    <Package className="w-5 h-5" />
-                    <h3 className="font-semibold">{kit.name}</h3>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              {KIT_TEMPLATES.map((kit) => {
+                const isSelected = selectedKit === kit.id;
+                
+                // Calculate kit-specific product counts
+                const kitProductCounts: Record<string, number> = {};
+                kit.baseProducts.forEach(productId => {
+                  kitProductCounts[productId] = (kitProductCounts[productId] || 0) + 1;
+                });
+                
+                // Calculate pricing for this specific kit
+                const kitCOGS = kit.baseProducts.reduce((total, productId) => {
+                  const product = PRODUCTS.find(p => p.id === productId);
+                  return total + (product ? product.cost : 0);
+                }, 0);
+                
+                const adjustedCOGS = kitCOGS * (1 + inputs.globalMarkupPercentage / 100);
+                const earlyBird = adjustedCOGS / (1 - inputs.targetKitMargin / 100);
+                const thousandBackers = earlyBird * 1.1;
+                const retail = earlyBird * 1.2;
+                const fullRetail = earlyBird * 1.3;
+                
+                return (
+                  <div
+                    key={kit.id}
+                    className={`rounded-lg border transition-all ${
+                      isSelected
+                        ? 'bg-purple-500/30 border-purple-400'
+                        : 'bg-white/5 border-white/20 hover:bg-white/10'
+                    }`}
+                  >
+                    {/* Kit Header */}
+                    <div 
+                      className="p-4 cursor-pointer"
+                      onClick={() => {
+                        setSelectedKit(kit.id);
+                        initializeKit(kit.id);
+                      }}
+                    >
+                      <div className="flex items-center gap-2 mb-2">
+                        <Package className="w-5 h-5 text-white" />
+                        <h3 className="font-semibold text-lg text-white">{kit.name}</h3>
+                        {isSelected && <div className="w-2 h-2 bg-purple-400 rounded-full"></div>}
+                      </div>
+                      <p className="text-sm text-white/70 mb-3">{kit.description}</p>
+                      
+                      {/* Pricing Tiers */}
+                      <div className="grid grid-cols-2 gap-1 text-xs mb-3">
+                        <div className="text-green-300">Early Bird: ${earlyBird.toFixed(0)}</div>
+                        <div className="text-blue-300">1000 Backers: ${thousandBackers.toFixed(0)}</div>
+                        <div className="text-yellow-300">Standard: ${retail.toFixed(0)}</div>
+                        <div className="text-red-300">Full Retail: ${fullRetail.toFixed(0)}</div>
+                      </div>
+                    </div>
+                    
+                    {/* Product List with Quantity Controls */}
+                    <div className="border-t border-white/10 p-4">
+                      <div className="text-sm font-medium text-white/90 mb-3">Products in Kit:</div>
+                      <div className="space-y-2 max-h-80 overflow-y-auto">
+                        {PRODUCTS.map((product) => {
+                          const defaultQuantity = kitProductCounts[product.id] || 0;
+                          const currentQuantity = selectedProducts[product.id] || 0;
+                          const isInKit = defaultQuantity > 0;
+                          
+                          const categoryColors = {
+                            security: 'bg-red-500/20 text-red-300 border-red-500/30',
+                            automation: 'bg-blue-500/20 text-blue-300 border-blue-500/30',
+                            energy: 'bg-green-500/20 text-green-300 border-green-500/30',
+                            comfort: 'bg-purple-500/20 text-purple-300 border-purple-500/30',
+                            pet: 'bg-orange-500/20 text-orange-300 border-orange-500/30'
+                          };
+                          
+                          return (
+                            <div 
+                              key={product.id} 
+                              className={`p-2 rounded border transition-all ${
+                                isInKit 
+                                  ? 'bg-white/10 border-white/20' 
+                                  : 'bg-white/5 border-white/10 opacity-60'
+                              } ${
+                                currentQuantity > 0 ? 'ring-1 ring-purple-400/50' : ''
+                              }`}
+                            >
+                              <div className="flex items-center justify-between">
+                                <div className="flex-1 min-w-0">
+                                  <div className="text-xs font-medium text-white truncate">{product.name}</div>
+                                  <div className="text-xs text-white/60">${product.cost}</div>
+                                  <span className={`inline-block px-1.5 py-0.5 rounded text-xs border ${
+                                    categoryColors[product.category]
+                                  }`}>
+                                    {product.category}
+                                  </span>
+                                  {isInKit && (
+                                    <div className="text-xs text-purple-300 mt-1">Default: {defaultQuantity}</div>
+                                  )}
+                                </div>
+                                <div className="flex items-center gap-1 ml-2">
+                                  <button
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      updateProductQuantity(product.id, -1);
+                                    }}
+                                    disabled={currentQuantity === 0}
+                                    className="w-6 h-6 rounded bg-red-500/20 border border-red-500/30 text-red-300 disabled:opacity-30 hover:bg-red-500/30 flex items-center justify-center transition-colors"
+                                  >
+                                    <Minus className="w-3 h-3" />
+                                  </button>
+                                  <span className={`w-8 text-center text-xs font-mono ${
+                                    currentQuantity > 0 ? 'text-white font-bold' : 'text-white/50'
+                                  }`}>
+                                    {currentQuantity}
+                                  </span>
+                                  <button
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      updateProductQuantity(product.id, 1);
+                                    }}
+                                    className="w-6 h-6 rounded bg-green-500/20 border border-green-500/30 text-green-300 hover:bg-green-500/30 flex items-center justify-center transition-colors"
+                                  >
+                                    <Plus className="w-3 h-3" />
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                      
+                      {/* Kit Summary */}
+                      <div className="mt-3 pt-3 border-t border-white/10">
+                        <div className="text-xs text-white/80">
+                          Total Items: {Object.values(selectedProducts).reduce((a, b) => a + b, 0)} | 
+                          Total COGS: ${totalCOGS.toFixed(2)}
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <p className="text-sm opacity-80 mb-2">{kit.description}</p>
-                  <div className="text-xs">
-                    <div>Early Bird: ${getDynamicKitPrice(kit.id).earlyBird}</div>
-                    <div>Retail: ${getDynamicKitPrice(kit.id).retail}</div>
-                  </div>
-                </button>
-              ))}
+                );
+              })}
             </div>
           </div>
         </div>
@@ -690,37 +878,38 @@ export default function PricingCalculatorPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-white/80 mb-2">Global CAC</label>
+                <label className="block text-sm font-medium text-white/80 mb-2">Global CAC (Per Kit)</label>
                 <div className="relative">
                   <input
                     type="number"
-                    step="1000"
-                    placeholder="Enter customer acquisition cost"
+                    step="1"
+                    min="0"
+                    placeholder="Enter CAC per kit"
                     value={inputs.globalCAC || ''}
                     onChange={(e) => updateInput('globalCAC', parseFloat(e.target.value) || 0)}
                     className="w-full px-3 py-2 bg-white/5 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500"
                   />
                   <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-white/60 text-sm">$</span>
                 </div>
-                <div className="text-xs text-white/60 mt-1">Cost per kit - multiplied by total kit quantity</div>
+                <div className="text-xs text-white/60 mt-1">Customer acquisition cost per individual kit</div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-white/80 mb-2">Target Kit Margin</label>
+                <label className="block text-sm font-medium text-white/80 mb-2">Target Kit Margin (Auto-Calculated)</label>
                 <div className="relative">
                   <input
                     type="number"
                     step="0.1"
                     min="0"
                     max="100"
-                    placeholder="Enter target margin percentage"
-                    value={inputs.targetKitMargin || ''}
-                    onChange={(e) => updateInput('targetKitMargin', parseFloat(e.target.value) || 0)}
-                    className="w-full px-3 py-2 bg-white/5 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    placeholder="Auto-calculated from markup"
+                    value={inputs.targetKitMargin.toFixed(1)}
+                    readOnly
+                    className="w-full px-3 py-2 bg-white/5 border border-white/20 rounded-lg text-white placeholder-white/50 opacity-60 cursor-not-allowed"
                   />
                   <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-white/60 text-sm">%</span>
                 </div>
-                <div className="text-xs text-white/60 mt-1">Margin percentage used to calculate dynamic kit pricing</div>
+                <div className="text-xs text-white/60 mt-1">Automatically calculated based on global markup percentage</div>
               </div>
             </div>
           </div>
