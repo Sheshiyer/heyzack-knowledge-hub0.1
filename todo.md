@@ -11,8 +11,6 @@ Complete rebuild of HeyZack Knowledge Hub dashboard with modern floating navigat
 - Clean separation of concerns
 
 ## In Progress
-- [ ] Create reusable UI components (cards, buttons, inputs)
-- [ ] Implement Visual Pricing Calculator with LaunchBoom integration
 
 ## Completed (move to memory.md)
 
@@ -56,6 +54,20 @@ Complete rebuild of HeyZack Knowledge Hub dashboard with modern floating navigat
 - **Status**: ✅ COMPLETED - Homepage now shows real document statistics with loading states
 
 ## Pending Tasks
+
+### Phase 0: Cloudflare Infrastructure Migration (PRIORITY)
+- [ ] Install and configure Wrangler CLI for Cloudflare Workers
+- [ ] Set up Cloudflare KV namespace for document metadata and caching
+- [ ] Create Cloudflare Worker for document discovery API (/api/documents/discover)
+- [ ] Migrate document indexing logic to Cloudflare Workers
+- [ ] Set up Cloudflare Pages deployment configuration
+- [ ] Configure GitHub integration for automatic deployments
+- [ ] Migrate search functionality to use KV storage for performance
+- [ ] Update frontend to use Cloudflare Workers endpoints
+- [ ] Deploy to Cloudflare Pages via CLI (wrangler pages deploy)
+- [ ] Configure custom domain and SSL settings
+- [ ] Set up environment variables and secrets in Cloudflare
+- [ ] Test auto-refresh functionality with KV Workers
 
 ### Phase 1: Core Architecture & Design System
 - [ ] Create new design system with CSS variables and Tailwind config

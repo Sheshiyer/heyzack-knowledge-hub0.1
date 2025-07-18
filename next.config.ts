@@ -1,7 +1,14 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  // Static export for Cloudflare Pages
+  output: 'export',
+  trailingSlash: true,
+  images: {
+    unoptimized: true,
+  },
+  
+  // Rewrite rule to serve data-sources content
   async rewrites() {
     return [
       {
@@ -10,12 +17,14 @@ const nextConfig: NextConfig = {
       },
     ];
   },
-  webpack: (config: any) => {
-    // Copy data-sources to public directory during build
+  
+  webpack: (config) => {
+    // Add raw-loader for .md and .txt files
     config.module.rules.push({
       test: /\.(md|txt)$/,
       use: 'raw-loader',
     });
+    
     return config;
   },
 };

@@ -6,9 +6,13 @@ export class DocumentIndexer {
   private processor: MarkdownProcessor;
   private isIndexed = false;
   private indexingPromise: Promise<void> | null = null;
+  private lastFileCount = 0;
+  private autoRefreshInterval: NodeJS.Timeout | null = null;
+  private lastRefreshTime = 0;
 
   private constructor() {
     this.processor = MarkdownProcessor.getInstance();
+    this.startAutoRefresh();
   }
 
   static getInstance(): DocumentIndexer {
@@ -48,6 +52,8 @@ export class DocumentIndexer {
         }
       }
 
+      // Update file count for auto-refresh tracking
+      this.lastFileCount = markdownFiles.length;
       console.log(`Successfully indexed ${markdownFiles.length} documents`);
     } catch (error) {
       console.error('Failed to index documents:', error);
@@ -56,11 +62,36 @@ export class DocumentIndexer {
   }
 
   /**
-   * Get list of all markdown files to process
+   * Get list of all markdown files to process using dynamic discovery
    */
   private async getMarkdownFileList(): Promise<string[]> {
-    // Since we're in a client-side environment, we'll define the files statically
-    // In a real implementation, you might want to generate this list at build time
+    try {
+      // Try to use dynamic file discovery API
+      // Use Cloudflare Worker endpoint when deployed, fallback to local API
+      const workerUrl = process.env.NEXT_PUBLIC_WORKER_URL || '';
+      const apiUrl = workerUrl ? `${workerUrl}/api/documents/discover` : '/api/documents/discover';
+      const response = await fetch(apiUrl);
+      if (response.ok) {
+        const data = await response.json();
+        if (data.success && Array.isArray(data.files)) {
+          console.log(`Dynamically discovered ${data.files.length} markdown files`);
+          return data.files;
+        }
+      }
+      
+      console.warn('Dynamic file discovery failed, falling back to static list');
+    } catch (error) {
+      console.warn('Error during dynamic file discovery:', error);
+    }
+    
+    // Fallback to static list if dynamic discovery fails
+    return this.getStaticMarkdownFileList();
+  }
+
+  /**
+   * Static fallback list of markdown files
+   */
+  private getStaticMarkdownFileList(): string[] {
     return [
       // Wiki Hub
       'data-sources/00_Wiki_Hub_README.md',
@@ -90,6 +121,9 @@ export class DocumentIndexer {
       'data-sources/02_Campaign_Core/HeyZack_StageSpecific_CampaignConcepts.md',
       'data-sources/02_Campaign_Core/HeyZack_ThreeStage_CampaignStrategy.md',
       'data-sources/02_Campaign_Core/HeyZack_VideoScript_Templates.md',
+      'data-sources/02_Campaign_Core/enhanced_founder_script.md',
+      'data-sources/02_Campaign_Core/founder_story_framework.md',
+      'data-sources/02_Campaign_Core/gary_founder_scripts.md',
 
       // Email Marketing
       'data-sources/03_Email_Marketing/HeyZack_EmailTemplateVisualGuidelines.md',
@@ -111,9 +145,11 @@ export class DocumentIndexer {
 
       // Supporting Materials
       'data-sources/06_Supporting_Materials/HeyZack_CompetitorResearch.md',
+      'data-sources/06_Supporting_Materials/HeyZack_Kickstarter_Kit_Concepts.md',
       'data-sources/06_Supporting_Materials/HeyZack_PressRelease.md',
       'data-sources/06_Supporting_Materials/HeyZack_PricingCalculator.md',
       'data-sources/06_Supporting_Materials/HeyZack_SocialMediaContentCalendar.md',
+      'data-sources/06_Supporting_Materials/HeyZack_Unconventional_Kit_Concepts.md',
 
       // Project Management
       'data-sources/07_Project_Management/memory.md',
@@ -126,7 +162,10 @@ export class DocumentIndexer {
       // Strategic Analysis
       'data-sources/09_Strategic_Analysis/HeyZack_Business_Model_Canvas.md',
       'data-sources/09_Strategic_Analysis/HeyZack_Go-to-Market_Strategy_Stage1_Optimization.md',
-      'data-sources/09_Strategic_Analysis/HeyZack_Porters_Five_Forces_Analysis.md'
+      'data-sources/09_Strategic_Analysis/HeyZack_Porters_Five_Forces_Analysis.md',
+
+      // Reference Materials
+      'data-sources/10_Reference_Materials/AI_Ready_Business_Context.txt'
     ];
   }
 
@@ -228,12 +267,93 @@ export class DocumentIndexer {
   }
 
   /**
-   * Force re-indexing
+   * Force re-indexing of all documents
    */
   async reindex(): Promise<void> {
     this.isIndexed = false;
     this.indexingPromise = null;
+    this.lastRefreshTime = Date.now();
     await this.indexDocuments();
+  }
+
+  /**
+   * Start automatic refresh checking for new files
+   */
+  private startAutoRefresh(): void {
+    // Check for new files every 30 seconds
+    this.autoRefreshInterval = setInterval(async () => {
+      await this.checkForUpdates();
+    }, 30000);
+  }
+
+  /**
+   * Stop automatic refresh
+   */
+  stopAutoRefresh(): void {
+    if (this.autoRefreshInterval) {
+      clearInterval(this.autoRefreshInterval);
+      this.autoRefreshInterval = null;
+    }
+  }
+
+  /**
+   * Check for file updates and refresh if needed
+   */
+  private async checkForUpdates(): Promise<void> {
+    try {
+      // Avoid too frequent checks
+      const now = Date.now();
+      if (now - this.lastRefreshTime < 10000) { // 10 second minimum interval
+        return;
+      }
+
+      const workerUrl = process.env.NEXT_PUBLIC_WORKER_URL || '';
+      const apiUrl = workerUrl ? `${workerUrl}/api/documents/discover` : '/api/documents/discover';
+      const response = await fetch(apiUrl);
+      if (response.ok) {
+        const data = await response.json();
+        if (data.success && Array.isArray(data.files)) {
+          // Check if file count changed
+          if (data.files.length !== this.lastFileCount) {
+            console.log(`File count changed: ${this.lastFileCount} → ${data.files.length}. Refreshing...`);
+            this.lastFileCount = data.files.length;
+            await this.reindex();
+          }
+        }
+      }
+    } catch (error) {
+      console.warn('Auto-refresh check failed:', error);
+    }
+  }
+
+  /**
+   * Manual refresh trigger with force option
+   */
+  async refreshDocuments(force = false): Promise<{ success: boolean; newCount: number; previousCount: number }> {
+    try {
+      const previousCount = this.getAllDocuments().length;
+      
+      if (force) {
+        await this.reindex();
+      } else {
+        await this.checkForUpdates();
+      }
+      
+      const newCount = this.getAllDocuments().length;
+      
+      return {
+        success: true,
+        newCount,
+        previousCount
+      };
+    } catch (error) {
+      console.error('Manual refresh failed:', error);
+      return {
+        success: false,
+        newCount: 0,
+        previousCount: 0
+      };
+    }
   }
 
   /**

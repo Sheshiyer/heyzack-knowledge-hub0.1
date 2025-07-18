@@ -30,8 +30,13 @@ interface UseDocumentsReturn {
   
   // Utility functions
   refresh: () => Promise<void>;
+  forceRefresh: () => Promise<{ success: boolean; newCount: number; previousCount: number }>;
   getAllTags: () => string[];
   getDocumentsWithDiagrams: () => ProcessedDocument[];
+  
+  // Auto-refresh controls
+  stopAutoRefresh: () => void;
+  isAutoRefreshEnabled: boolean;
 }
 
 export function useDocuments(): UseDocumentsReturn {
@@ -41,6 +46,7 @@ export function useDocuments(): UseDocumentsReturn {
   const [isLoading, setIsLoading] = useState(true);
   const [isSearching, setIsSearching] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isAutoRefreshEnabled, setIsAutoRefreshEnabled] = useState(true);
   
   const [indexer] = useState(() => DocumentIndexer.getInstance());
   const [searchEngine] = useState(() => SearchEngine.getInstance());
@@ -148,6 +154,29 @@ export function useDocuments(): UseDocumentsReturn {
     await initializeDocuments();
   }, [initializeDocuments]);
 
+  const forceRefresh = useCallback(async (): Promise<{ success: boolean; newCount: number; previousCount: number }> => {
+    try {
+      const result = await indexer.refreshDocuments(true);
+      if (result.success) {
+        // Update local state with new documents
+        const allDocuments = indexer.getAllDocuments();
+        const stats = indexer.getDocumentStats();
+        const categoryStats = indexer.getCategoryStats();
+        
+        setDocuments(allDocuments);
+        setDocumentStats(stats);
+        setCategories(categoryStats);
+        
+        // Re-initialize search engine with new documents
+        await searchEngine.initialize();
+      }
+      return result;
+    } catch (error) {
+      console.error('Force refresh failed:', error);
+      return { success: false, newCount: 0, previousCount: 0 };
+    }
+  }, [indexer, searchEngine]);
+
   const getAllTags = useCallback((): string[] => {
     return indexer.getAllTags();
   }, [indexer]);
@@ -155,6 +184,29 @@ export function useDocuments(): UseDocumentsReturn {
   const getDocumentsWithDiagrams = useCallback((): ProcessedDocument[] => {
     return indexer.getDocumentsWithDiagrams();
   }, [indexer]);
+
+  // Auto-refresh controls
+  const stopAutoRefresh = useCallback((): void => {
+    indexer.stopAutoRefresh();
+    setIsAutoRefreshEnabled(false);
+  }, [indexer]);
+
+  // Listen for auto-refresh updates
+  useEffect(() => {
+    const checkForAutoUpdates = setInterval(() => {
+      if (isAutoRefreshEnabled && !isLoading) {
+        const currentDocuments = indexer.getAllDocuments();
+        if (currentDocuments.length !== documents.length) {
+          // Documents were updated by auto-refresh, update state
+          setDocuments(currentDocuments);
+          setDocumentStats(indexer.getDocumentStats());
+          setCategories(indexer.getCategoryStats());
+        }
+      }
+    }, 5000); // Check every 5 seconds
+
+    return () => clearInterval(checkForAutoUpdates);
+  }, [indexer, documents.length, isAutoRefreshEnabled, isLoading]);
 
   return {
     // Documents
@@ -181,8 +233,13 @@ export function useDocuments(): UseDocumentsReturn {
     
     // Utility functions
     refresh,
+    forceRefresh,
     getAllTags,
-    getDocumentsWithDiagrams
+    getDocumentsWithDiagrams,
+    
+    // Auto-refresh controls
+    stopAutoRefresh,
+    isAutoRefreshEnabled,
   };
 }
 

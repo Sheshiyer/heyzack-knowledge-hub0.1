@@ -45,7 +45,7 @@
         256,
         384
       ],
-      "path": "/_next/image",
+      "path": "/_next/image/",
       "loader": "default",
       "loaderFile": "",
       "domains": [],
@@ -58,7 +58,7 @@
       "contentSecurityPolicy": "script-src 'none'; frame-src 'none'; sandbox;",
       "contentDispositionType": "attachment",
       "remotePatterns": [],
-      "unoptimized": false
+      "unoptimized": true
     },
     "devIndicators": {
       "position": "bottom-left"
@@ -72,7 +72,7 @@
     },
     "basePath": "",
     "sassOptions": {},
-    "trailingSlash": false,
+    "trailingSlash": true,
     "i18n": null,
     "productionBrowserSourceMaps": false,
     "excludeDefaultMomentLocales": true,
@@ -87,6 +87,7 @@
     "logging": {},
     "expireTime": 31536000,
     "staticPageGenerationTimeout": 60,
+    "output": "export",
     "modularizeImports": {
       "@mui/icons-material": {
         "transform": "@mui/icons-material/{{member}}"
@@ -95,7 +96,7 @@
         "transform": "lodash/{{member}}"
       }
     },
-    "outputFileTracingRoot": "/Users/sheshnarayaniyer/2025/HeyZack/wiki-dashboard-lauchboom/heyzack-knowledge-hub",
+    "outputFileTracingRoot": "/Users/sheshnarayaniyer/2025/heyzack-wiki-launchboom/wiki-dashboard-lauchboom/heyzack-knowledge-hub",
     "experimental": {
       "nodeMiddleware": false,
       "cacheLife": {
@@ -278,7 +279,7 @@
     "bundlePagesRouterDependencies": false,
     "configFileName": "next.config.ts",
     "turbopack": {
-      "root": "/Users/sheshnarayaniyer/2025/HeyZack/wiki-dashboard-lauchboom/heyzack-knowledge-hub"
+      "root": "/Users/sheshnarayaniyer/2025/heyzack-wiki-launchboom/wiki-dashboard-lauchboom/heyzack-knowledge-hub"
     },
     "_originalRewrites": {
       "beforeFiles": [],
@@ -291,7 +292,7 @@
       "fallback": []
     }
   },
-  "appDir": "/Users/sheshnarayaniyer/2025/HeyZack/wiki-dashboard-lauchboom/heyzack-knowledge-hub",
+  "appDir": "/Users/sheshnarayaniyer/2025/heyzack-wiki-launchboom/wiki-dashboard-lauchboom/heyzack-knowledge-hub",
   "relativeAppDir": "",
   "files": [
     ".next/routes-manifest.json",

@@ -5,8 +5,13 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
+    "build:worker": "npx wrangler deploy",
+    "build:pages": "npm run build && npx wrangler pages deploy out",
+    "deploy": "npm run build:worker && npm run build:pages",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "cf:login": "npx wrangler login",
+    "cf:whoami": "npx wrangler whoami"
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
@@ -46,6 +51,7 @@
     "eslint": "^9",
     "eslint-config-next": "15.3.5",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "wrangler": "^4.24.0"
   }
 }

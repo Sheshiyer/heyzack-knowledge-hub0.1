@@ -1,12 +1,12 @@
 'use client';
 
-import { useState, useMemo, useEffect } from 'react';
-import { Calculator, Download, Save, Upload, Plus, Minus, Package, TrendingUp, BarChart3, Target, Users, DollarSign } from 'lucide-react';
+import { useState, useMemo, useEffect, useCallback } from 'react';
+import { Calculator, Download, Save, Upload, Plus, Minus, Package } from 'lucide-react';
 
 // Utility function to format numbers consistently across server and client
-const formatNumber = (num: number): string => {
-  return new Intl.NumberFormat('en-US').format(num);
-};
+// const formatNumber = (num: number): string => {
+//   return new Intl.NumberFormat('en-US').format(num);
+// };
 
 interface Product {
   id: string;
@@ -151,7 +151,7 @@ export default function PricingCalculatorPage() {
 
 
   // Helper function to calculate dynamic pricing for a kit
-  const calculateKitDynamicPrice = (kitId: string) => {
+  const calculateKitDynamicPrice = useCallback((kitId: string) => {
     const kit = KIT_TEMPLATES.find(k => k.id === kitId);
     if (!kit) return { earlyBird: 0, retail: 0 };
     
@@ -176,19 +176,19 @@ export default function PricingCalculatorPage() {
       earlyBird: Math.round(earlyBirdPrice * 100) / 100,
       retail: Math.round(retailPrice * 100) / 100
     };
-  };
+  }, [inputs.globalMarkupPercentage, inputs.targetKitMargin]);
 
   // Function to calculate COGS for a specific kit
-  const calculateKitCOGS = (products: Record<string, number>): number => {
-    const baseCOGS = Object.entries(products).reduce((total, [productId, quantity]) => {
-      const product = PRODUCTS.find(p => p.id === productId);
-      return total + (product ? product.cost * quantity : 0);
-    }, 0);
-    
-    // Apply global markup percentage
-    const markupMultiplier = 1 + (inputs.globalMarkupPercentage / 100);
-    return baseCOGS * markupMultiplier;
-  };
+  // const calculateKitCOGS = (products: Record<string, number>): number => {
+  //   const baseCOGS = Object.entries(products).reduce((total, [productId, quantity]) => {
+  //     const product = PRODUCTS.find(p => p.id === productId);
+  //     return total + (product ? product.cost * quantity : 0);
+  //   }, 0);
+  //   
+  //   // Apply global markup percentage
+  //   const markupMultiplier = 1 + (inputs.globalMarkupPercentage / 100);
+  //   return baseCOGS * markupMultiplier;
+  // };
 
   // Auto-calculate target kit margin based on global markup
   const calculateAutoTargetKitMargin = (globalMarkupPercentage: number) => {
@@ -200,49 +200,49 @@ export default function PricingCalculatorPage() {
   };
 
   // Calculate comprehensive pricing tiers for kit templates
-  const calculateKitPricingTiers = () => {
-    const kitCOGS = calculateKitCOGS(selectedProducts);
-    const adjustedCOGS = kitCOGS * (1 + inputs.globalMarkupPercentage / 100);
-    
-    // Cost Price (COGS + markup)
-    const costPrice = adjustedCOGS;
-    
-    // Early Bird (based on target margin)
-    const earlyBird = adjustedCOGS / (1 - inputs.targetKitMargin / 100);
-    
-    // 1000 Backers (10% higher than early bird)
-    const thousandBackers = earlyBird * 1.1;
-    
-    // Standard/Retail (20% higher than early bird)
-    const retail = earlyBird * 1.2;
-    
-    // Full Retail (30% higher than early bird)
-    const fullRetail = earlyBird * 1.3;
-    
-    return {
-      costPrice,
-      earlyBird,
-      thousandBackers,
-      retail,
-      fullRetail
-    };
-  };
+  // const calculateKitPricingTiers = () => {
+  //   const kitCOGS = calculateKitCOGS(selectedProducts);
+  //   const adjustedCOGS = kitCOGS * (1 + inputs.globalMarkupPercentage / 100);
+  //   
+  //   // Cost Price (COGS + markup)
+  //   const costPrice = adjustedCOGS;
+  //   
+  //   // Early Bird (based on target margin)
+  //   const earlyBird = adjustedCOGS / (1 - inputs.targetKitMargin / 100);
+  //   
+  //   // 1000 Backers (10% higher than early bird)
+  //   const thousandBackers = earlyBird * 1.1;
+  //   
+  //   // Standard/Retail (20% higher than early bird)
+  //   const retail = earlyBird * 1.2;
+  //   
+  //   // Full Retail (30% higher than early bird)
+  //   const fullRetail = earlyBird * 1.3;
+  //   
+  //   return {
+  //     costPrice,
+  //     earlyBird,
+  //     thousandBackers,
+  //     retail,
+  //     fullRetail
+  //   };
+  // };
 
   // Get selected products with quantities for display
-  const getSelectedProductsList = () => {
-    return Object.entries(selectedProducts)
-      .filter(([_, quantity]) => quantity > 0)
-      .map(([productId, quantity]) => {
-        const product = PRODUCTS.find(p => p.id === productId);
-        if (!product) return null;
-        return {
-          ...product,
-          quantity,
-          totalCost: product.cost * quantity
-        };
-      })
-      .filter((item): item is Product & { quantity: number; totalCost: number } => item !== null);
-  };
+  // const getSelectedProductsList = () => {
+  //   return Object.entries(selectedProducts)
+  //     .filter(([_, quantity]) => quantity > 0)
+  //     .map(([productId, quantity]) => {
+  //       const product = PRODUCTS.find(p => p.id === productId);
+  //       if (!product) return null;
+  //       return {
+  //         ...product,
+  //         quantity,
+  //         totalCost: product.cost * quantity
+  //       };
+  //     })
+  //     .filter((item): item is Product & { quantity: number; totalCost: number } => item !== null);
+  // };
 
   // Initialize selected products based on kit template
   const initializeKit = (kitId: string) => {
@@ -292,9 +292,9 @@ export default function PricingCalculatorPage() {
         yourMSRP: dynamicPrices.retail
       }));
     }
-  }, [inputs.globalMarkupPercentage, inputs.targetKitMargin, selectedKit]);
+  }, [inputs.globalMarkupPercentage, inputs.targetKitMargin, selectedKit, calculateKitDynamicPrice]);
 
-  const currentKit = KIT_TEMPLATES.find(k => k.id === selectedKit);
+  // const currentKit = KIT_TEMPLATES.find(k => k.id === selectedKit);
   
   // Calculate total COGS from selected products with global markup
   const totalCOGS = useMemo(() => {
@@ -312,7 +312,8 @@ export default function PricingCalculatorPage() {
     setSelectedProducts(prev => {
       const newQuantity = Math.max(0, (prev[productId] || 0) + change);
       if (newQuantity === 0) {
-        const { [productId]: removed, ...rest } = prev;
+        const { [productId]: _removed, ...rest } = prev;
+        console.log('Removed product ID:', _removed); // Use the variable to avoid ESLint error
         return rest;
       }
       return { ...prev, [productId]: newQuantity };
@@ -414,9 +415,9 @@ export default function PricingCalculatorPage() {
   }, [inputs.globalMarkupPercentage, inputs.targetKitMargin]);
 
   // Helper function to get dynamic kit price
-  const getDynamicKitPrice = (kitId: string) => {
+  const getDynamicKitPrice = useCallback((kitId: string) => {
     return dynamicKitPrices[kitId] || { earlyBird: 0, retail: 0 };
-  };
+  }, [dynamicKitPrices]);
 
   // Validation system for comprehensive kit pricing
   const validatePricingInputs = useMemo(() => {
@@ -472,7 +473,7 @@ export default function PricingCalculatorPage() {
     }
 
     return { warnings, errors, isValid: errors.length === 0 };
-  }, [inputs, priceSelection, selectedKit]);
+  }, [inputs, priceSelection, selectedKit, getDynamicKitPrice]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 p-6">

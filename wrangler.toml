@@ -1,0 +1,33 @@
+name = "heyzack-knowledge-hub"
+main = "src/worker/index.ts"
+compatibility_date = "2024-01-15"
+compatibility_flags = ["nodejs_compat"]
+
+# KV Namespaces
+[[kv_namespaces]]
+binding = "DOCUMENTS_KV"
+id = "fc7ffa4e50784bbead7bff68f8de02ce"
+
+[[kv_namespaces]]
+binding = "SEARCH_INDEX_KV"
+id = "8d319c3f124849adb24b701418b92dc3"
+
+# Environment variables
+[vars]
+ENVIRONMENT = "production"
+GITHUB_REPO = "heyzack-wiki-launchboom"
+GITHUB_OWNER = "sheshnarayaniyer"
+DATA_SOURCES_PATH = "wiki-dashboard-lauchboom/heyzack-knowledge-hub/data-sources"
+
+# Pages configuration
+[env.production]
+name = "heyzack-knowledge-hub"
+route = { pattern = "heyzack-knowledge-hub.pages.dev", zone_name = "pages.dev" }
+
+[env.preview]
+name = "heyzack-knowledge-hub-preview"
+
+# Build configuration
+[build]
+command = "npm run build"
+watch_dir = "src"
